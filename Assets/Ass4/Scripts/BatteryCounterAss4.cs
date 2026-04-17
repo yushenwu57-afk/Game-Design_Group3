@@ -1,12 +1,12 @@
 using TMPro;
 using UnityEngine;
 
-public class BatteryCounter : MonoBehaviour
+public class BatteryCounterAss4 : MonoBehaviour
 {
     [SerializeField] private TMPro.TextMeshProUGUI counterText;
     [SerializeField] private string prefix = "";
 
-    private static BatteryCounter instance;
+    private static BatteryCounterAss4 instance;
     private int remaining;
     private int total;
 
@@ -15,9 +15,9 @@ public class BatteryCounter : MonoBehaviour
         instance = this;
     }
 
-    private void OnEnable()
+    private void Start()
     {
-        total = FindObjectsByType<Coin>().Length;
+        total = FindObjectsByType<BatteryAss4>().Length;
         remaining = total;
         RefreshUI();
     }
@@ -46,3 +46,4 @@ public class BatteryCounter : MonoBehaviour
         counterText.text = $"{prefix}: {collected}/{total}";
     }
 }
+

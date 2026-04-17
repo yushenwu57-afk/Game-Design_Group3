@@ -20,7 +20,7 @@ public class MovingPlatform : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         if (_rb != null)
         {
-            _rb.isKinematic = true;
+            _rb.bodyType = RigidbodyType2D.Kinematic;
             _rb.simulated = true;
         }
         _startY = transform.position.y;

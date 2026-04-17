@@ -55,7 +55,7 @@ public class Player : MonoBehaviour
         jumpsRemaining = maxJumps;
         if (healthUI == null)
         {
-            healthUI = FindFirstObjectByType<Health>();
+            healthUI = FindAnyObjectByType<Health>();
         }
     }
 
@@ -257,7 +257,7 @@ public class Player : MonoBehaviour
 
         if (healthUI == null)
         {
-            healthUI = FindFirstObjectByType<Health>();
+            healthUI = FindAnyObjectByType<Health>();
         }
         if (healthUI != null)
         {
