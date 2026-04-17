@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
     private float moveInput;
     private bool jumpRequested;
     private MovingPlatform currentPlatform;
+    private bool isFrozen;
 
     private const string AnimIdle = "Player";
     private const string AnimRun = "Player_Run";
@@ -67,6 +68,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isFrozen) return;
+
         moveInput = 0f;
         if (Keyboard.current != null)
         {
@@ -94,6 +97,15 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isFrozen)
+        {
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero;
+            }
+            return;
+        }
+
         float platformX = currentPlatform != null ? currentPlatform.CurrentVelocity.x : 0f;
         rb.linearVelocity = new Vector2(moveInput * speed + platformX, rb.linearVelocity.y); // Apply horizontal movement to Rigidbody2D
         isGrounded = groundCheck != null && Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
@@ -248,6 +260,7 @@ public class Player : MonoBehaviour
 
     public void ResetForRestart()
     {
+        isFrozen = false;
         currentHp = maxHp;
         jumpsRemaining = maxJumps;
         hasKey = false;
@@ -275,6 +288,24 @@ public class Player : MonoBehaviour
         }
 
         Respawn();
+    }
+
+    public void FreezeOnWin()
+    {
+        isFrozen = true;
+        moveInput = 0f;
+        jumpRequested = false;
+        currentPlatform = null;
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
+
+        if (animator != null)
+        {
+            PlayAnim(AnimIdle);
+        }
     }
 
     public void ReturnToStart()

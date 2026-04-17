@@ -24,10 +24,14 @@ public class Finish : MonoBehaviour
             if (!player.hasKey) return;
 
             hasTriggered = true;
+            player.FreezeOnWin();
+
             if (winUI != null)
             {
                 winUI.SetActive(true);
             }
+
+            Time.timeScale = 0f;
 
             if (disablePlayerOnWin)
             {
