@@ -4,11 +4,17 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     [Header("Scene Names (must be added to Build Settings)")]
+    [SerializeField] private string introductionScene = "Introduction";
     [SerializeField] private string tutorialScene = "Tutorial";
     [SerializeField] private string level1Scene = "Level1";
     [SerializeField] private string level2Scene = "Level2";
     [SerializeField] private string level3Scene = "Level3";
     [SerializeField] private string level4Scene = "Level4";
+
+    public void LoadIntroduction()
+    {
+        LoadSceneByName(introductionScene);
+    }
 
     public void LoadTutorial()
     {
