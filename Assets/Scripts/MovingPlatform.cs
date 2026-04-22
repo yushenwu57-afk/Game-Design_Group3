@@ -7,15 +7,17 @@ public class MovingPlatform : MonoBehaviour
     public Transform pointB;
     public float waitTime = 0.2f;
     public string playerTag = "Player";
+    public bool startActivated = true;
 
     Transform _target;
     float _waitTimer;
     float _startY;
     Vector3 _lastPos;
     Rigidbody2D _rb;
+    bool _isActive;
     public Vector2 CurrentVelocity { get; private set; }
 
-    void Start()
+    protected void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         if (_rb != null)
@@ -35,12 +37,19 @@ public class MovingPlatform : MonoBehaviour
         {
             _target = pointB;
         }
+        _isActive = startActivated;
         _lastPos = transform.position;
     }
 
-    void FixedUpdate()
+    protected void FixedUpdate()
     {
         if (pointA == null || pointB == null) return;
+        if (!_isActive)
+        {
+            CurrentVelocity = Vector2.zero;
+            _lastPos = transform.position;
+            return;
+        }
 
         if (_waitTimer > 0f)
         {
@@ -79,7 +88,12 @@ public class MovingPlatform : MonoBehaviour
         }
     }
 
-    void OnDrawGizmosSelected()
+    public void ActivatePlatform()
+    {
+        _isActive = true;
+    }
+
+    protected void OnDrawGizmosSelected()
     {
         if (pointA == null || pointB == null) return;
         Gizmos.color = Color.cyan;
@@ -88,7 +102,7 @@ public class MovingPlatform : MonoBehaviour
         Gizmos.DrawSphere(pointB.position, 0.1f);
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    protected void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider != null && collision.collider.CompareTag(playerTag))
         {
@@ -99,7 +113,7 @@ public class MovingPlatform : MonoBehaviour
         }
     }
 
-    void OnCollisionStay2D(Collision2D collision)
+    protected void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.collider != null && collision.collider.CompareTag(playerTag))
         {
@@ -111,7 +125,7 @@ public class MovingPlatform : MonoBehaviour
         }
     }
 
-    void OnCollisionExit2D(Collision2D collision)
+    protected void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.collider != null && collision.collider.CompareTag(playerTag))
         {
@@ -123,7 +137,7 @@ public class MovingPlatform : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    protected void OnTriggerEnter2D(Collider2D other)
     {
         if (other != null && other.CompareTag(playerTag))
         {
@@ -134,7 +148,7 @@ public class MovingPlatform : MonoBehaviour
         }
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    protected void OnTriggerExit2D(Collider2D other)
     {
         if (other != null && other.CompareTag(playerTag))
         {
